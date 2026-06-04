@@ -1,0 +1,6 @@
+{
+  "name": "Informatie Theorie & Bedrijfssturing Selector",
+  "description": "Interactieve visualisatie en simulatietool die de Informatietheorie van Claude Shannon verbindt met bedrijfskundige Edstacks over e-business, datagedreven sturing, optimalisatie en IT-architectuur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
