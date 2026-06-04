@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sliders, Database, TrendingDown, BookOpen, AlertCircle } from 'lucide-react';
+import { Sliders, Database, TrendingDown, BookOpen, AlertCircle, TrendingUp, AlertTriangle, HelpCircle } from 'lucide-react';
 
 export default function EntropySimulator() {
   // Scenario 1: Binary state (Success vs Failure of a product, e.g. Bol Recept+ or CampusBite launch)
@@ -51,39 +51,72 @@ export default function EntropySimulator() {
     setProbs([0.25, 0.25, 0.25, 0.25]);
   };
 
-  // Determine Data Maturity level based on multiState entropy
-  // High entropy (near 2.0 bits) means high uncertainty
-  // Low entropy (near 0.0 bits) means high predictability
+  // Determine Data Maturity level based on entropy.
+  // This axis measures ONLY uncertainty (how clearly we can see the outcome),
+  // NOT whether that outcome is desirable. High entropy (near max) = high
+  // uncertainty; low entropy (near 0) = high predictability. The colour is a
+  // maturity scale (low → high), it is NOT a good/bad signal — the separate
+  // "Voorspelde uitkomst" axis carries desirability.
   const getMaturityLevel = (entropyValue: number, maxEntropy: number) => {
     const ratio = entropyValue / maxEntropy;
     if (ratio > 0.8) {
       return {
         level: "Niveau 1: Data-Exploring (Intuïtie)",
-        desc: "Zeer hoge onzekerheid. Er is geen betrouwbare data. Beslissingen worden hoofdzakelijk op basis van onderbuikgevoel genomen. Risico op fouten is maximaal.",
+        desc: "Zeer hoge onzekerheid. De uitkomst is vrijwel niet te voorspellen; beslissingen leunen op onderbuikgevoel. (Dit zegt niets over of de uitkomst goed of slecht is — alleen dat je het niet weet.)",
         color: "text-ink bg-pink"
       };
     } else if (ratio > 0.5) {
       return {
         level: "Niveau 2: Data-Informed (Dashboarding)",
-        desc: "Middelmatige onzekerheid. Historische data (Descriptive Analytics) brengt trends in beeld, waardoor grote veronderstellingen worden geëlimineerd.",
+        desc: "Middelmatige onzekerheid. Historische data (Descriptive Analytics) brengt trends in beeld, waardoor de grootste aannames worden geëlimineerd.",
         color: "text-ink bg-violet/30"
       };
     } else if (ratio > 0.2) {
       return {
         level: "Niveau 3: Data-Driven (Predictive)",
-        desc: "Lage onzekerheid. Door regressie en AI-modellen voorspellen we de vraag nauwkeurig. We weten vooraf wat de klant wil bestellen (Edstack 2).",
+        desc: "Lage onzekerheid. Met regressie en AI-modellen (Predictive Analytics) is de uitkomst goed te voorspellen — gunstig óf ongunstig.",
         color: "text-ink bg-blue/20"
       };
     } else {
       return {
         level: "Niveau 4: Data-Transformed (Prescriptive)",
-        desc: "Minimale onzekerheid. Systemen anticiperen automatisch en sturen processen direct bij. De feedbacklus is zo direct dat verrassingen uitblijven.",
+        desc: "Minimale onzekerheid. De uitkomst is nagenoeg zeker. Systemen kunnen automatisch anticiperen en processen direct bijsturen (Prescriptive).",
         color: "text-ink bg-lime"
       };
     }
-  };  const currentMaturity = activeTab === 'binary' 
-    ? getMaturityLevel(binaryEntropy, 1) 
+  };
+
+  // Second, independent axis (binary scenario only): the DIRECTION the outcome
+  // leans, i.e. desirability. This is deliberately separate from entropy — a
+  // 90%-failure product has low entropy (very predictable) but a bad outcome.
+  const getOutcomeVerdict = (successProb: number) => {
+    if (Math.abs(successProb - 0.5) < 0.05) {
+      return {
+        label: "Uitkomst onbeslist (≈50/50)",
+        desc: "Maximale onzekerheid — er is geen betrouwbare voorspelling mogelijk. Dit is precies waar dataverzameling moet beginnen.",
+        color: "text-ink bg-violet/30",
+        Icon: HelpCircle
+      };
+    } else if (successProb > 0.5) {
+      return {
+        label: `Voorspelde uitkomst: waarschijnlijk SUCCES (${(successProb * 100).toFixed(0)}%)`,
+        desc: "De data wijst richting succes. Hoe lager de entropie, hoe zekerder deze gunstige voorspelling.",
+        color: "text-ink bg-lime",
+        Icon: TrendingUp
+      };
+    }
+    return {
+      label: `Voorspelde uitkomst: waarschijnlijk MISLUKKING (${((1 - successProb) * 100).toFixed(0)}%)`,
+      desc: "Let op: lage entropie betekent hier dat je vrij zeker wéét dat het slecht afloopt — niet dat het goed gaat. Juist hoge datavolwassenheid laat je dit vóór de lancering zien, zodat je kunt bijsturen, pivoten of stoppen.",
+      color: "text-ink bg-pink",
+      Icon: AlertTriangle
+    };
+  };
+
+  const currentMaturity = activeTab === 'binary'
+    ? getMaturityLevel(binaryEntropy, 1)
     : getMaturityLevel(multiEntropy, 2);
+  const outcomeVerdict = getOutcomeVerdict(pSuccess);
 
   return (
     <div className="nb-card p-6">
@@ -198,7 +231,8 @@ export default function EntropySimulator() {
             </h4>
             <p className="text-xs leading-relaxed text-cream/80 font-medium">
               In de business kan &apos;onzekerheid&apos; leiden tot overschotten of tekorten (bijv. te veel winterjassen inkopen terwijl het warm blijft).
-              Door <strong>Diagnostic Analytics</strong> en predictive AI-modellen verminderen we deze entropy. Hoe beter de predictive analytics, hoe schever (gerichter) de verdeling wordt, en hoe dichter de entropy bij 0 bits ligt.
+              Door <strong>Diagnostic Analytics</strong> en predictive AI-modellen brengen we deze entropy omlaag: we zien de uitkomst steeds helderder.
+              Let wel: entropy meet <strong>onzekerheid</strong>, niet wenselijkheid. Een verdeling die richting <em>mislukking</em> scheeftrekt heeft óók lage entropy — dat is een signaal om op te acteren (bijsturen, pivoten of stoppen), niet om te vieren.
             </p>
           </div>
         </div>
@@ -311,7 +345,7 @@ export default function EntropySimulator() {
             )}
           </div>
 
-          {/* Org Data Maturity representation */}
+          {/* Axis 1 — Data maturity (uncertainty / how much we KNOW) */}
           <div className={`p-4 nb-box transition-all ${currentMaturity.color}`} id="entropy-maturity-card">
             <div className="flex items-center gap-2 mb-1.5">
               <TrendingDown className="w-4 h-4 shrink-0" />
@@ -319,9 +353,28 @@ export default function EntropySimulator() {
                 Gekoppeld Organisatieniveau (Edstack 2):
               </span>
             </div>
+            <p className="text-[11px] font-medium opacity-80 mb-1.5 italic">
+              Mate van zekerheid / informatie — niet of de uitkomst gunstig is.
+            </p>
             <strong className="block text-sm mb-1">{currentMaturity.level}</strong>
             <p className="text-xs leading-relaxed font-medium opacity-95">{currentMaturity.desc}</p>
           </div>
+
+          {/* Axis 2 — Predicted outcome desirability (binary scenario only).
+              A demand distribution has no inherent good/bad, so this is hidden
+              in the multi-state tab. */}
+          {activeTab === 'binary' && (
+            <div className={`p-4 nb-box transition-all ${outcomeVerdict.color}`} id="entropy-outcome-card">
+              <div className="flex items-center gap-2 mb-1.5">
+                <outcomeVerdict.Icon className="w-4 h-4 shrink-0" />
+                <span className="font-bold text-sm uppercase tracking-wide">
+                  Voorspelde uitkomst (wenselijkheid):
+                </span>
+              </div>
+              <strong className="block text-sm mb-1">{outcomeVerdict.label}</strong>
+              <p className="text-xs leading-relaxed font-medium opacity-95">{outcomeVerdict.desc}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
