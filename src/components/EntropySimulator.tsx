@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
-import { HelpCircle, Sliders, Database, TrendingDown, BookOpen, AlertCircle } from 'lucide-react';
+import { Sliders, Database, TrendingDown, BookOpen, AlertCircle } from 'lucide-react';
 
 export default function EntropySimulator() {
   // Scenario 1: Binary state (Success vs Failure of a product, e.g. Bol Recept+ or CampusBite launch)
@@ -61,25 +60,25 @@ export default function EntropySimulator() {
       return {
         level: "Niveau 1: Data-Exploring (Intuïtie)",
         desc: "Zeer hoge onzekerheid. Er is geen betrouwbare data. Beslissingen worden hoofdzakelijk op basis van onderbuikgevoel genomen. Risico op fouten is maximaal.",
-        color: "text-rose-600 bg-rose-50 border-rose-200"
+        color: "text-ink bg-pink"
       };
     } else if (ratio > 0.5) {
       return {
         level: "Niveau 2: Data-Informed (Dashboarding)",
         desc: "Middelmatige onzekerheid. Historische data (Descriptive Analytics) brengt trends in beeld, waardoor grote veronderstellingen worden geëlimineerd.",
-        color: "text-amber-600 bg-amber-50 border-amber-200"
+        color: "text-ink bg-violet/30"
       };
     } else if (ratio > 0.2) {
       return {
         level: "Niveau 3: Data-Driven (Predictive)",
         desc: "Lage onzekerheid. Door regressie en AI-modellen voorspellen we de vraag nauwkeurig. We weten vooraf wat de klant wil bestellen (Edstack 2).",
-        color: "text-emerald-600 bg-emerald-50 border-emerald-200"
+        color: "text-ink bg-blue/20"
       };
     } else {
       return {
         level: "Niveau 4: Data-Transformed (Prescriptive)",
         desc: "Minimale onzekerheid. Systemen anticiperen automatisch en sturen processen direct bij. De feedbacklus is zo direct dat verrassingen uitblijven.",
-        color: "text-indigo-600 bg-indigo-50 border-indigo-200"
+        color: "text-ink bg-lime"
       };
     }
   };  const currentMaturity = activeTab === 'binary' 
@@ -87,27 +86,26 @@ export default function EntropySimulator() {
     : getMaturityLevel(multiEntropy, 2);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+    <div className="nb-card p-6">
       <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <Database className="w-6 h-6 text-brand-blue" />
-          <h2 className="text-xl font-bold text-slate-800 font-serif italic">
+        <span className="nb-pill nb-pill-pink">⬗ Quest 2 · Tame the Entropy Beast</span>
+        <div className="flex items-center gap-2 mt-2.5">
+          <Database className="w-6 h-6 text-blue" />
+          <h2 className="text-2xl">
             Simulatie 1: Entropy (H) &amp; Datagedreven sturen (Edstack 2)
           </h2>
         </div>
-        <p className="text-slate-600 text-sm mt-1">
+        <p className="text-muted text-sm mt-1.5 font-medium">
           Shannon definieerde <strong>Entropy (H)</strong> wiskundig als de mate van onzekerheid of verrassing in een systeem. Ontdek hoe dataverzameling de entropy reduceert en jouw datavolwassenheid verhoogt.
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-200 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setActiveTab('binary')}
-          className={`px-4 py-2 text-sm font-semibold border-b-2 transition-all ${
-            activeTab === 'binary'
-              ? 'border-brand-blue text-brand-blue'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
+          className={`nb-btn px-4 py-2 text-sm ${
+            activeTab === 'binary' ? 'nb-btn-pink' : 'nb-btn-ghost'
           }`}
           id="entropy-tab-binary"
         >
@@ -115,10 +113,8 @@ export default function EntropySimulator() {
         </button>
         <button
           onClick={() => setActiveTab('multistate')}
-          className={`px-4 py-2 text-sm font-semibold border-b-2 transition-all ${
-            activeTab === 'multistate'
-              ? 'border-brand-blue text-brand-blue'
-              : 'border-transparent text-slate-400 hover:text-slate-600'
+          className={`nb-btn px-4 py-2 text-sm ${
+            activeTab === 'multistate' ? 'nb-btn-pink' : 'nb-btn-ghost'
           }`}
           id="entropy-tab-multi"
         >
@@ -129,16 +125,16 @@ export default function EntropySimulator() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Sliders and Controls */}
         <div className="space-y-6">
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <h3 className="font-semibold text-slate-700 text-sm mb-3 flex items-center gap-1.5">
-              <Sliders className="w-4 h-4 text-brand-blue" />
+          <div className="bg-cream nb-box p-4">
+            <h3 className="text-sm mb-3 flex items-center gap-1.5">
+              <Sliders className="w-4 h-4 text-blue" />
               Systeemparameters Instellen
             </h3>
 
             {activeTab === 'binary' ? (
               <div className="space-y-4">
                 <div>
-                  <div className="flex justify-between text-xs text-slate-500 mb-1 font-mono">
+                  <div className="flex justify-between text-xs text-muted mb-1.5 font-mono font-bold">
                     <span>Kans op Succes (p₁): {(pSuccess * 100).toFixed(0)}%</span>
                     <span>Kans op Mislukking (p₂): {(pFail * 100).toFixed(0)}%</span>
                   </div>
@@ -149,12 +145,12 @@ export default function EntropySimulator() {
                     step="0.01"
                     value={pSuccess}
                     onChange={(e) => setPSuccess(parseFloat(e.target.value))}
-                    className="w-full accent-brand-blue"
+                    className="nb-slider"
                     id="entropy-binary-range"
                   />
                 </div>
-                <div className="text-xs text-slate-500 italic bg-orange-50 border border-orange-100 p-3 rounded-lg flex gap-2">
-                  <AlertCircle className="w-4 h-4 text-brand-accent shrink-0" />
+                <div className="text-xs font-medium bg-blue/10 nb-box p-3 flex gap-2">
+                  <AlertCircle className="w-4 h-4 text-pink shrink-0" />
                   <span>
                     Merk op dat de onzekerheid (entropy) minimaal is bij 0% of 100% kans (geen verrassing mogelijk) en maximaal bij exact 50%.
                   </span>
@@ -162,11 +158,11 @@ export default function EntropySimulator() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-semibold text-slate-600">Productgroepen (Kledingwinkel):</span>
+                <div className="flex justify-between items-center mb-2 gap-2">
+                  <span className="nb-eyebrow">Productgroepen (Kledingwinkel):</span>
                   <button
                     onClick={handleNormalize}
-                    className="text-[11px] px-2 py-1 text-brand-blue bg-blue-50 hover:bg-blue-100 rounded font-semibold"
+                    className="nb-btn nb-btn-blue text-[11px] px-2 py-1"
                     id="entropy-normalize-btn"
                   >
                     Reset naar Uniform (Maximale Entropy)
@@ -174,9 +170,9 @@ export default function EntropySimulator() {
                 </div>
                 {['T-shirts', 'Winterjassen', 'Schoenen', 'Accessoires'].map((name, idx) => (
                   <div key={idx}>
-                    <div className="flex justify-between text-xs font-mono text-slate-500 mb-1">
+                    <div className="flex justify-between text-xs font-mono font-bold text-muted mb-1.5">
                       <span>{name} (p_{idx + 1}):</span>
-                      <span>{(probs[idx] * 100).toFixed(1)}%</span>
+                      <span className="nb-score">{(probs[idx] * 100).toFixed(1)}%</span>
                     </div>
                     <input
                       type="range"
@@ -185,7 +181,7 @@ export default function EntropySimulator() {
                       step="0.01"
                       value={probs[idx]}
                       onChange={(e) => handleMultiSliderChange(idx, parseFloat(e.target.value))}
-                      className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-blue"
+                      className="nb-slider"
                       id={`entropy-multi-range-${idx}`}
                     />
                   </div>
@@ -195,13 +191,13 @@ export default function EntropySimulator() {
           </div>
 
           {/* Theoretical Connection */}
-          <div className="bg-slate-900 text-slate-100 p-5 rounded-xl border border-slate-800 shadow-sm">
-            <h4 className="font-bold text-sm mb-2 flex items-center gap-1 text-brand-accent font-serif">
+          <div className="nb-panel-dark p-5">
+            <h4 className="text-sm mb-2 flex items-center gap-1.5 text-pink">
               <BookOpen className="w-4 h-4" />
               Link met Edstack 2 (Datagedreven Sturen):
             </h4>
-            <p className="text-xs leading-relaxed text-slate-300">
-              In de business kan &apos;onzekerheid&apos; leiden tot overschotten of tekorten (bijv. te veel winterjassen inkopen terwijl het warm blijft). 
+            <p className="text-xs leading-relaxed text-cream/80 font-medium">
+              In de business kan &apos;onzekerheid&apos; leiden tot overschotten of tekorten (bijv. te veel winterjassen inkopen terwijl het warm blijft).
               Door <strong>Diagnostic Analytics</strong> en predictive AI-modellen verminderen we deze entropy. Hoe beter de predictive analytics, hoe schever (gerichter) de verdeling wordt, en hoe dichter de entropy bij 0 bits ligt.
             </p>
           </div>
@@ -209,30 +205,31 @@ export default function EntropySimulator() {
 
         {/* Math Calculation & Graph Visuals */}
         <div className="space-y-6">
-          <div className="bg-slate-50 p-5 rounded-xl border border-slate-250 flex flex-col justify-between">
+          <div className="nb-panel-dark p-5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">
+              <div className="flex items-center justify-between mb-4 gap-2">
+                <span className="nb-eyebrow !text-cream">
                   Wiskundige Output
                 </span>
-                <span className="text-[10px] text-slate-400 bg-slate-200 px-2 py-0.5 rounded uppercase font-bold">
+                <span className="nb-pill nb-pill-lime !text-[0.6rem]">
                   Berekend in bits
                 </span>
               </div>
 
-              {/* Big metric display */}
+              {/* CHAOS METER readout */}
+              <div className="nb-eyebrow !text-pink mb-1">⬗ Chaos Meter · H(X)</div>
               <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-4xl font-extrabold text-brand-blue font-mono tracking-tight" id="entropy-value-display">
+                <span className="nb-score text-5xl text-lime" id="entropy-value-display">
                   {(activeTab === 'binary' ? binaryEntropy : multiEntropy).toFixed(4)}
                 </span>
-                <span className="text-slate-400 text-sm font-semibold">bits per beslissing</span>
+                <span className="text-cream/70 text-sm font-bold">bits per beslissing</span>
               </div>
 
               {/* Step-by-step formula */}
-              <div className="text-xs font-mono text-slate-600 bg-white p-3 rounded-lg border border-slate-200/80 space-y-1.5 overflow-x-auto">
-                <div className="text-brand-blue font-bold">Shannon&apos;s Entropy Formule:</div>
-                <div className="text-[11px] text-slate-405">H(X) = - ∑ p_i * log₂(p_i)</div>
-                <div className="text-brand-blue-hover font-semibold border-t border-slate-100 pt-1.5 mt-1.5">
+              <div className="text-xs font-mono bg-cream text-ink nb-box p-3 space-y-1.5 overflow-x-auto">
+                <div className="text-blue font-bold">Shannon&apos;s Entropy Formule:</div>
+                <div className="text-[11px] text-muted">H(X) = - ∑ p_i * log₂(p_i)</div>
+                <div className="text-blue font-bold border-t-[3px] border-ink pt-1.5 mt-1.5">
                   Berekening:
                 </div>
                 {activeTab === 'binary' ? (
@@ -241,7 +238,7 @@ export default function EntropySimulator() {
                     <br />
                     H(X) = - [ ({pSuccess.toFixed(2)} * {log2(pSuccess).toFixed(2)}) + ({pFail.toFixed(2)} * {log2(pFail).toFixed(2)}) ]
                     <br />
-                    H(X) = <span className="font-bold text-brand-accent">{binaryEntropy.toFixed(4)} bits</span>
+                    H(X) = <span className="font-bold text-pink">{binaryEntropy.toFixed(4)} bits</span>
                   </div>
                 ) : (
                   <div className="leading-relaxed text-[11px] max-h-32 overflow-y-auto font-mono">
@@ -263,7 +260,7 @@ export default function EntropySimulator() {
                     ))}
                     ]
                     <br />
-                    H(X) = <span className="font-bold text-brand-accent">{multiEntropy.toFixed(4)} bits</span> (Max is {Math.log2(4).toFixed(1)} bits)
+                    H(X) = <span className="font-bold text-pink">{multiEntropy.toFixed(4)} bits</span> (Max is {Math.log2(4).toFixed(1)} bits)
                   </div>
                 )}
               </div>
@@ -271,10 +268,10 @@ export default function EntropySimulator() {
 
             {/* Binary Entropy Curve (Visual Canvas) */}
             {activeTab === 'binary' && (
-              <div className="mt-4 pt-4 border-t border-slate-200">
-                <div className="text-xs font-semibold text-slate-500 mb-1 flex justify-between">
+              <div className="mt-4 pt-4 border-t-[3px] border-cream/30">
+                <div className="text-xs font-bold text-cream mb-1 flex justify-between gap-2">
                   <span>Visuele Entropy-curve:</span>
-                  <span className="font-mono text-[10px] text-brand-blue">Kans (x) vs. Entropy (y)</span>
+                  <span className="font-mono text-[10px] text-lime">Kans (x) vs. Entropy (y)</span>
                 </div>
                 <div className="h-28 w-full relative pt-2">
                   <svg className="w-full h-full overflow-visible" viewBox="0 0 100 30">
@@ -282,7 +279,7 @@ export default function EntropySimulator() {
                     <path
                       d="M 0,30 Q 50,0 100,30"
                       fill="none"
-                      stroke="#e2e8f0"
+                      stroke="#C9F227"
                       strokeWidth="2"
                     />
                     {/* Active Point tracker */}
@@ -290,7 +287,7 @@ export default function EntropySimulator() {
                       cx={pSuccess * 100}
                       cy={30 - (binaryEntropy * 30)}
                       r="4"
-                      fill="#f27d26"
+                      fill="#FF4FA3"
                       className="animate-pulse"
                     />
                     {/* Guidelines */}
@@ -299,12 +296,12 @@ export default function EntropySimulator() {
                       y1="30"
                       x2={pSuccess * 100}
                       y2={30 - (binaryEntropy * 30)}
-                      stroke="#1e3a8a"
+                      stroke="#FFFCF2"
                       strokeWidth="1"
                       strokeDasharray="2"
                     />
                   </svg>
-                  <div className="flex justify-between text-[9px] text-slate-400 mt-1 font-mono">
+                  <div className="flex justify-between text-[9px] text-cream/60 mt-1 font-mono">
                     <span>p=0 (Zekerheid)</span>
                     <span>p=0.5 (Max Ruis/Uncertainty)</span>
                     <span>p=1 (Zekerheid)</span>
@@ -315,7 +312,7 @@ export default function EntropySimulator() {
           </div>
 
           {/* Org Data Maturity representation */}
-          <div className={`p-4 rounded-xl border transition-all ${currentMaturity.color}`} id="entropy-maturity-card">
+          <div className={`p-4 nb-box transition-all ${currentMaturity.color}`} id="entropy-maturity-card">
             <div className="flex items-center gap-2 mb-1.5">
               <TrendingDown className="w-4 h-4 shrink-0" />
               <span className="font-bold text-sm uppercase tracking-wide">
@@ -323,7 +320,7 @@ export default function EntropySimulator() {
               </span>
             </div>
             <strong className="block text-sm mb-1">{currentMaturity.level}</strong>
-            <p className="text-xs leading-relaxed opacity-95">{currentMaturity.desc}</p>
+            <p className="text-xs leading-relaxed font-medium opacity-95">{currentMaturity.desc}</p>
           </div>
         </div>
       </div>

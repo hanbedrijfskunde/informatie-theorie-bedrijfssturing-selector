@@ -44,140 +44,73 @@ export default function ShannonIntro() {
 
   const exp = getExplanation(hoveredElement || 'bron');
 
+  // Each station in the Shannon chain, with its quest colour.
+  const blocks = [
+    { id: 'bron', n: 1, title: 'Informatiebron', sub: 'Kiest bericht uit pool van opties', tag: 'Business Doelen', icon: FileText, fill: 'bg-lime' },
+    { id: 'encoder', n: 2, title: 'Encoder (Sender)', sub: 'Zet bericht om in meetbaar signaal', tag: 'E-Commerce / Standaard', icon: Network, fill: 'bg-pink' },
+    { id: 'kanaal', n: 3, title: 'Ruis & Kanaal', sub: 'Transmissiemedium vol met storing', tag: 'De Organisatie & Ruis', icon: AlertTriangle, fill: 'bg-[#FF5252]' },
+    { id: 'decoder', n: 4, title: 'Decoder', sub: 'Vertaalt signalen terug naar betekenis', tag: 'Business-IT Alignment', icon: Database, fill: 'bg-blue' },
+    { id: 'bestemming', n: 5, title: 'Bestemming', sub: 'Eindontvanger verwerkt de boodschap', tag: 'KPI Dashboard / Klant', icon: Sparkles, fill: 'bg-violet' },
+  ] as const;
+
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+    <div className="nb-card p-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <span className="px-3 py-1 text-xs font-semibold text-brand-blue bg-blue-50 rounded-full">
-            Historisch Fundament
-          </span>
-          <h2 className="text-2xl font-bold text-slate-800 mt-2 font-serif italic">
-            Claude Shannon: De Vader van de Informatietijd
-          </h2>
-          <p className="text-slate-600 text-sm mt-1">
-            In 1948 mathematiseerde Shannon &apos;informatie&apos;. Zijn model bleek niet alleen toepasbaar op kabels, maar ook op hoe organisaties sturen en controleren.
+          <span className="nb-pill nb-pill-lime">⬗ Quest 1 · Historisch Fundament</span>
+          <h2 className="text-2xl mt-2.5">Claude Shannon: de vader van de informatietijd</h2>
+          <p className="text-muted text-sm mt-1.5 font-medium max-w-2xl">
+            In 1948 mathematiseerde Shannon &apos;informatie&apos;. Zijn model bleek niet alleen toepasbaar op
+            kabels, maar ook op hoe organisaties sturen en controleren.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-700 bg-slate-100/80 p-2.5 rounded-lg border border-slate-300 self-start md:self-auto font-medium shadow-sm">
-          <Sparkles className="w-4 h-4 text-brand-accent animate-pulse" />
-          <span>Beweeg over de componenten om de link te ontdekken!</span>
+        <div className="nb-pill nb-pill-pink self-start md:self-auto !text-[0.65rem] py-2">
+          <Sparkles className="w-4 h-4" /> Hover de stations →
         </div>
       </div>
 
-      {/* Interactive Shannon Block Diagram */}
-      <div className="bg-slate-900 rounded-xl p-6 mb-6 overflow-x-auto">
-        <div className="min-w-[700px] relative py-4">
-          <div className="grid grid-cols-5 gap-4 relative z-10">
-            {/* Source */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center flex flex-col justify-between h-40 ${
-                hoveredElement === 'bron'
-                  ? 'bg-brand-blue/30 border-brand-blue shadow-lg shadow-brand-blue/20'
-                  : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
-              }`}
-              onMouseEnter={() => setHoveredElement('bron')}
-              id="shannon-block-source"
-            >
-              <div className="flex justify-center"><FileText className="w-8 h-8 text-brand-blue" /></div>
-              <div className="font-semibold text-sm text-white">1. Informatiebron</div>
-              <div className="text-[10px] text-slate-400 italic">Kiest bericht uit pool van opties</div>
-              <div className="mt-1 text-[11px] font-bold text-brand-blue bg-blue-50/10 px-2 py-0.5 rounded">
-                Business Doelen
-              </div>
-            </div>
-
-            {/* Encoder */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center flex flex-col justify-between h-40 ${
-                hoveredElement === 'encoder'
-                  ? 'bg-brand-accent/20 border-brand-accent shadow-lg shadow-brand-accent/20'
-                  : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
-              }`}
-              onMouseEnter={() => setHoveredElement('encoder')}
-              id="shannon-block-encoder"
-            >
-              <div className="flex justify-center"><Network className="w-8 h-8 text-brand-accent" /></div>
-              <div className="font-semibold text-sm text-white">2. Encoder (Sender)</div>
-              <div className="text-[10px] text-slate-400 italic">Zet bericht om in meetbaar signaal</div>
-              <div className="mt-1 text-[11px] font-bold text-brand-accent bg-orange-500/10 px-2 py-0.5 rounded">
-                E-Commerce / Standaard
-              </div>
-            </div>
-
-            {/* Channel (Middle) */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center flex flex-col justify-between h-40 relative ${
-                hoveredElement === 'kanaal'
-                  ? 'bg-slate-950 border-brand-accent/50 shadow-lg'
-                  : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
-              }`}
-              onMouseEnter={() => setHoveredElement('kanaal')}
-              id="shannon-block-channel"
-            >
-              <div className="flex justify-center"><AlertTriangle className="w-8 h-8 text-rose-400" /></div>
-              <div className="font-semibold text-sm text-white">3. Ruis & Kanaal</div>
-              <div className="text-[10px] text-slate-400 italic">Transmissiemedium vol met storing</div>
-              <div className="mt-1 text-[11px] font-bold text-rose-350 bg-rose-500/10 px-2 py-0.5 rounded">
-                De Organisatie & Ruis
-              </div>
-            </div>
-
-            {/* Decoder */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center flex flex-col justify-between h-40 ${
-                hoveredElement === 'decoder'
-                  ? 'bg-emerald-950/80 border-emerald-500 shadow-lg shadow-emerald-500/20'
-                  : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
-              }`}
-              onMouseEnter={() => setHoveredElement('decoder')}
-              id="shannon-block-decoder"
-            >
-              <div className="flex justify-center"><Database className="w-8 h-8 text-emerald-400" /></div>
-              <div className="font-semibold text-sm text-white">4. Decoder</div>
-              <div className="text-[10px] text-slate-400 italic">Vertaalt signalen terug naar betekenis</div>
-              <div className="mt-1 text-[11px] font-bold text-emerald-300 bg-emerald-950 px-2 py-0.5 rounded">
-                Business-IT Alignment
-              </div>
-            </div>
-
-            {/* Destination */}
-            <div
-              className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center flex flex-col justify-between h-40 ${
-                hoveredElement === 'bestemming'
-                  ? 'bg-sky-950/80 border-sky-500 shadow-lg shadow-sky-500/20'
-                  : 'bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300'
-              }`}
-              onMouseEnter={() => setHoveredElement('bestemming')}
-              id="shannon-block-destination"
-            >
-              <div className="flex justify-center flex-row gap-0.5">
-                <span className="w-3 h-3 bg-sky-400 rounded-full inline-block animate-ping" />
-                <span className="w-2 h-2 bg-sky-500 rounded-full inline-block" />
-              </div>
-              <div className="font-semibold text-sm text-white">5. Bestemming</div>
-              <div className="text-[10px] text-slate-400 italic">Eindontvanger verwerkt de boodschap</div>
-              <div className="mt-1 text-[11px] font-bold text-sky-300 bg-sky-950 px-2 py-0.5 rounded">
-                KPI Dashboard / Klant
-              </div>
-            </div>
+      {/* Interactive Shannon chain */}
+      <div className="nb-panel-dark p-6 mb-6 overflow-x-auto">
+        <div className="min-w-[720px]">
+          <div className="grid grid-cols-5 gap-3 relative z-10">
+            {blocks.map((b) => {
+              const Icon = b.icon;
+              const active = hoveredElement === b.id;
+              return (
+                <div
+                  key={b.id}
+                  id={`shannon-block-${b.id}`}
+                  onMouseEnter={() => setHoveredElement(b.id)}
+                  className={`p-3 nb-box transition-all cursor-pointer text-center flex flex-col justify-between h-44 ${
+                    active
+                      ? `${b.fill} text-ink -translate-y-1 nb-shadow-md`
+                      : 'bg-cream text-ink hover:-translate-y-0.5 hover:nb-shadow'
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="nb-score text-xs">0{b.n}</span>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm leading-tight">{b.title}</div>
+                    <div className="text-[0.62rem] text-muted font-medium mt-1 leading-snug">{b.sub}</div>
+                  </div>
+                  <div className={`text-[0.6rem] font-mono font-bold uppercase tracking-wide nb-box px-1.5 py-1 ${active ? 'bg-ink text-cream' : 'bg-white'}`}>
+                    {b.tag}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* SVG Connector lines */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ minWidth: '700px' }}>
-            <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
-              </marker>
-              <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#1e3a8a" />
-              </marker>
-            </defs>
-            {/* Draw connectors */}
-            <line x1="20%" y1="50%" x2="22%" y2="50%" stroke="#475569" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrow)" />
-            <line x1="40%" y1="50%" x2="42%" y2="50%" stroke="#475569" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrow)" />
-            <line x1="60%" y1="50%" x2="62%" y2="50%" stroke="#475569" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrow)" />
-            <line x1="80%" y1="50%" x2="82%" y2="50%" stroke="#475569" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrow)" />
-          </svg>
+          {/* flow arrows */}
+          <div className="grid grid-cols-5 gap-3 mt-2.5 px-2">
+            {blocks.map((b, i) => (
+              <div key={b.id} className="flex justify-center nb-score text-lime/70 text-lg">
+                {i < blocks.length - 1 ? '→' : '✦'}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -188,21 +121,20 @@ export default function ShannonIntro() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 border border-slate-200 p-5 rounded-xl"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-cream nb-box p-5"
         >
-          <div className="border-r border-slate-200/60 pr-4">
-            <div className="flex items-center gap-2 text-brand-blue font-bold text-base mb-2">
-              <Info className="w-5 h-5 text-brand-blue" />
-              {exp.title} – <span className="text-slate-500 font-medium text-sm">Wiskundige Theorie</span>
+          <div className="md:border-r-[3px] md:border-ink md:pr-4">
+            <div className="flex items-center gap-2 text-blue font-bold text-base mb-2">
+              <Info className="w-5 h-5" />
+              {exp.title} <span className="nb-eyebrow">· Wiskundige theorie</span>
             </div>
-            <p className="text-slate-600 text-sm leading-relaxed">{exp.theory}</p>
+            <p className="text-ink/80 text-sm leading-relaxed font-medium">{exp.theory}</p>
           </div>
           <div>
-            <div className="flex items-center gap-2 text-slate-800 font-bold text-base mb-2">
-              <Sparkles className="w-5 h-5 text-brand-accent" />
-              De Bedrijfskundige Lens
+            <div className="flex items-center gap-2 font-bold text-base mb-2">
+              <Sparkles className="w-5 h-5 text-pink" /> De bedrijfskundige lens
             </div>
-            <p className="text-slate-700 text-sm font-medium leading-relaxed bg-brand-accent/5 p-3 rounded-lg border border-brand-accent/20">
+            <p className="text-sm font-medium leading-relaxed bg-pink/15 nb-box p-3">
               {exp.business}
             </p>
           </div>
@@ -210,23 +142,25 @@ export default function ShannonIntro() {
       )}
 
       {/* Cross-thematic summary */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 pt-6 border-t border-slate-150">
-        <div className="p-4 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 rounded-xl border border-blue-100">
-          <h3 className="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-brand-blue" />
-            Wat is informatie volgens Shannon?
+      <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t-[3px] border-ink">
+        <div className="p-4 bg-blue/10 nb-box">
+          <h3 className="text-sm mb-1.5 flex items-center gap-2">
+            <span className="w-3 h-3 bg-blue nb-box" /> Wat is informatie volgens Shannon?
           </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Informatie is <strong>reductie van onzekerheid</strong>. Hoe onvoorspelbaarder een situatie is, hoe meer &apos;informatie&apos; er nodig is om deze te verhelderen. Als we een KPI formuleren (Edstack 2), proberen we de onzekerheid (entropy) van onze resultaten te verlagen naar een controleerbaar niveau.
+          <p className="text-xs text-ink/80 font-medium leading-relaxed">
+            Informatie is <strong>reductie van onzekerheid</strong>. Hoe onvoorspelbaarder een situatie,
+            hoe meer &apos;informatie&apos; nodig is om deze te verhelderen. Een KPI (Edstack 2) verlaagt de
+            entropy van je resultaten naar een controleerbaar niveau.
           </p>
         </div>
-        <div className="p-4 bg-gradient-to-r from-orange-50/50 to-red-50/50 rounded-xl border border-orange-100">
-          <h3 className="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-brand-accent" />
-            Wat is ruis in een organisatie?
+        <div className="p-4 bg-pink/12 nb-box">
+          <h3 className="text-sm mb-1.5 flex items-center gap-2">
+            <span className="w-3 h-3 bg-pink nb-box" /> Wat is ruis in een organisatie?
           </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Ruis is alles wat de oorspronkelijke strategische intentie corrumpeert. Slecht ontworpen informatiesystemen, onjuiste interpretaties en systemen die elkaar tegenwerken (Edstack 4: CampusBite) introduceren ruis. Regie op IT helpt om de signaalkwaliteit hoog te houden.
+          <p className="text-xs text-ink/80 font-medium leading-relaxed">
+            Ruis is alles wat de strategische intentie corrumpeert: slechte informatiesystemen, foute
+            interpretaties en systemen die elkaar tegenwerken (Edstack 4: CampusBite). Regie op IT houdt
+            de signaalkwaliteit hoog.
           </p>
         </div>
       </div>

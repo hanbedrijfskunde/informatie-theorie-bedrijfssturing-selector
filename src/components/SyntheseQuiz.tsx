@@ -60,56 +60,63 @@ export default function SyntheseQuiz() {
   const hasPassed = percentage >= 70;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+    <div className="nb-card p-6">
       {!quizFinished ? (
         <div>
-          {/* Header Progress */}
-          <div className="flex justify-between items-center mb-6">
+          {/* Header Progress — HUD */}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
             <div>
-              <span className="text-xs font-bold text-brand-blue bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                Synthese Quiz (MyEdumundo Koppelingen)
-              </span>
-              <h3 className="text-lg font-bold text-slate-800 mt-2 font-serif italic">
+              <span className="nb-pill nb-pill-pink">⚔ Boss Fight · Synthese</span>
+              <h3 className="text-2xl mt-2.5">
                 Test je Shannon-Inzicht
               </h3>
+              <p className="nb-eyebrow mt-1.5">
+                Synthese Quiz (MyEdumundo Koppelingen)
+              </p>
             </div>
-            <div className="text-xs text-slate-400 font-mono">
-              Vraag <span className="text-brand-blue font-bold">{currentQuestionIdx + 1}</span> van {SYNTHESE_QUIZ.length}
+            <div className="flex items-center gap-2 self-start">
+              <span className="nb-pill nb-pill-ink">
+                <span className="nb-score">{currentQuestionIdx + 1}</span>
+                / {SYNTHESE_QUIZ.length} Vraag
+              </span>
+              <span className="nb-pill nb-pill-lime">
+                <span className="nb-score">{score}</span> XP
+              </span>
             </div>
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full h-1.5 bg-slate-100 rounded-full mb-6 overflow-hidden">
+          <div className="w-full h-4 bg-cream nb-box mb-6 overflow-hidden">
             <div
-              className="bg-brand-blue h-full transition-all duration-300"
+              className="bg-pink h-full transition-all duration-300 border-r-[3px] border-ink"
               style={{ width: `${((currentQuestionIdx) / SYNTHESE_QUIZ.length) * 100}%` }}
             />
           </div>
 
           {/* Question Text */}
-          <div className="mb-6 bg-slate-50 p-5 rounded-xl border border-slate-200 font-medium text-slate-800 leading-relaxed text-sm md:text-base">
+          <div className="mb-6 bg-cream nb-box p-5 font-medium text-ink leading-relaxed text-sm md:text-base">
             {currentQuestion.question}
           </div>
 
           {/* Options Grid */}
           <div className="space-y-3 mb-6">
             {currentQuestion.options.map((option, idx) => {
-              let btnStyle = "border-slate-200 bg-white hover:border-slate-350 hover:bg-slate-50/50 text-slate-700";
+              let btnStyle = "bg-white text-ink hover:-translate-y-0.5 hover:nb-shadow";
               let iconElement = null;
 
               if (selectedOptionIdx === idx) {
-                btnStyle = "border-brand-blue bg-blue-50/20 text-brand-blue ring-1 ring-brand-blue";
+                btnStyle = "bg-blue text-cream nb-shadow";
               }
 
               if (hasSubmitted) {
                 if (idx === currentQuestion.correctAnswerIndex) {
-                  btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-900 ring-1 ring-emerald-500";
-                  iconElement = <Check className="w-4 h-4 text-emerald-600 shrink-0" />;
+                  btnStyle = "bg-lime text-ink nb-shadow";
+                  iconElement = <Check className="w-5 h-5 text-ink shrink-0" />;
                 } else if (selectedOptionIdx === idx) {
-                  btnStyle = "border-rose-500 bg-rose-50 text-rose-950 ring-1 ring-rose-500";
-                  iconElement = <X className="w-4 h-4 text-rose-600 shrink-0" />;
+                  btnStyle = "bg-[#FF5252] text-ink nb-shadow";
+                  iconElement = <X className="w-5 h-5 text-ink shrink-0" />;
                 } else {
-                  btnStyle = "border-slate-100 bg-slate-50/50 text-slate-400 opacity-60";
+                  btnStyle = "bg-white text-muted opacity-60";
                 }
               }
 
@@ -118,7 +125,7 @@ export default function SyntheseQuiz() {
                   key={idx}
                   onClick={() => handleOptionSelect(idx)}
                   disabled={hasSubmitted}
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between items-center text-xs md:text-sm font-medium cursor-pointer ${btnStyle}`}
+                  className={`w-full text-left p-4 nb-box transition-all flex justify-between items-center gap-3 text-xs md:text-sm font-bold cursor-pointer ${btnStyle}`}
                   id={`quiz-option-${idx}`}
                 >
                   <span className="leading-relaxed">{option}</span>
@@ -136,13 +143,13 @@ export default function SyntheseQuiz() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs space-y-1 border border-slate-800"
+                  className="nb-panel-dark p-4 text-xs space-y-1.5"
                 >
-                  <strong className="text-brand-accent font-bold flex items-center gap-1">
+                  <strong className="text-pink font-bold flex items-center gap-1.5 uppercase tracking-wide">
                     <Sparkles className="w-4 h-4 shrink-0" />
                     Uitleg &amp; Synthese:
                   </strong>
-                  <p className="leading-relaxed text-slate-300">
+                  <p className="leading-relaxed text-cream/90 font-medium">
                     {currentQuestion.explanation}
                   </p>
                 </motion.div>
@@ -154,7 +161,7 @@ export default function SyntheseQuiz() {
                 <button
                   onClick={handleSubmitAnswer}
                   disabled={selectedOptionIdx === null}
-                  className="bg-slate-800 hover:bg-slate-900 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold py-3 px-6 rounded-xl text-xs cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+                  className="nb-btn nb-btn-ink py-3 px-6 text-xs disabled:opacity-40 disabled:cursor-not-allowed"
                   id="quiz-submit-btn"
                 >
                   Controleer Antwoord
@@ -162,7 +169,7 @@ export default function SyntheseQuiz() {
               ) : (
                 <button
                   onClick={handleNextQuestion}
-                  className="bg-brand-blue hover:bg-brand-blue-hover text-white font-bold py-3 px-6 rounded-xl text-xs cursor-pointer inline-flex items-center gap-1.5 transition-colors shadow shadow-brand-blue/10"
+                  className="nb-btn nb-btn-pink py-3 px-6 text-xs"
                   id="quiz-next-btn"
                 >
                   {currentQuestionIdx < SYNTHESE_QUIZ.length - 1 ? 'Volgende Vraag' : 'Bekijk Resultaat'}
@@ -175,40 +182,40 @@ export default function SyntheseQuiz() {
       ) : (
         /* Quiz Finished Screen */
         <div className="text-center py-6">
-          <div className="inline-flex p-4 rounded-full mb-4 bg-slate-50 border border-slate-200">
-            <Award className={`w-12 h-12 ${hasPassed ? 'text-brand-blue' : 'text-slate-400'}`} />
+          <div className={`inline-flex p-4 mb-4 nb-box nb-shadow-md ${hasPassed ? 'bg-lime' : 'bg-[#FF5252]'}`}>
+            <Award className="w-12 h-12 text-ink" />
           </div>
 
-          <h3 className="text-2xl font-bold text-slate-800 font-serif italic">
+          <h3 className="text-3xl">
             Synthese afgerond!
           </h3>
-          <p className="text-slate-500 text-sm mt-1 max-w-md mx-auto">
+          <p className="text-muted text-sm mt-2 font-medium max-w-md mx-auto">
             Je hebt de 10 Shannon-MyEdumundo overbruggingsvragen voltooid.
           </p>
 
-          <div className="my-6 max-w-sm mx-auto bg-slate-50 rounded-2xl p-6 border border-slate-200">
-            <div className="text-4xl font-extrabold text-brand-blue font-mono mb-1" id="quiz-score-display">
+          <div className="my-6 max-w-sm mx-auto bg-cream nb-box nb-shadow-md p-6">
+            <div className="nb-score text-5xl text-ink mb-1" id="quiz-score-display">
               {score} / {SYNTHESE_QUIZ.length}
             </div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4 font-mono">
+            <div className="nb-eyebrow mb-4">
               Behaalde Score (minimale eis: 70%)
             </div>
 
             {hasPassed ? (
-              <div className="text-emerald-700 bg-emerald-50 border border-emerald-100 py-3 px-4 rounded-xl text-xs font-bold leading-relaxed">
+              <div className="bg-lime text-ink nb-box py-3 px-4 text-xs font-bold leading-relaxed">
                 Slopend geslaagd! 🎉 Je begrijpt hoe de wiskundige wetten van Shannon de fundering vormen voor digitale platformen, sturings-KPI&apos;s en veranderprocessen.
               </div>
             ) : (
-              <div className="text-rose-700 bg-rose-50 border border-rose-100 py-3 px-4 rounded-xl text-xs font-bold leading-relaxed flex flex-col gap-2">
-                <span className="flex items-center justify-center gap-1"><AlertCircle className="w-4 h-4 text-rose-500" /> Score is onder de 70% drempel.</span>
-                <span className="text-rose-600 font-normal">Herzie de theorie van entropy, transactiekosten, en de alignruis van Rik Maes en probeer het nog een keer!</span>
+              <div className="bg-[#FF5252]/20 text-ink nb-box py-3 px-4 text-xs font-bold leading-relaxed flex flex-col gap-2">
+                <span className="flex items-center justify-center gap-1.5 uppercase tracking-wide"><AlertCircle className="w-4 h-4 text-ink shrink-0" /> Score is onder de 70% drempel.</span>
+                <span className="font-medium normal-case">Herzie de theorie van entropy, transactiekosten, en de alignruis van Rik Maes en probeer het nog een keer!</span>
               </div>
             )}
           </div>
 
           <button
             onClick={handleResetQuiz}
-            className="border border-slate-250 hover:border-slate-350 text-slate-650 hover:text-slate-850 font-bold py-3 px-6 rounded-xl text-xs cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+            className="nb-btn py-3 px-6 text-xs"
             id="quiz-retry-btn"
           >
             <RotateCcw className="w-4 h-4" />

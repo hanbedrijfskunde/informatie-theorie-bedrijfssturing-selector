@@ -6,3 +6,12 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Local design reference material (large source HTML exports)
+design-system/
+
+# Browser automation artifacts
+.playwright-mcp/
+*.jpeg
+*.png
+!assets/**

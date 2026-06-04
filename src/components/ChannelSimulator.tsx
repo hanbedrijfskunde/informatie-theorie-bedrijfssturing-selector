@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { HelpCircle, Network, Power, Zap, AlertCircle, Sparkles, CheckCircle } from 'lucide-react';
+import { Network, Power, Sparkles, CheckCircle } from 'lucide-react';
 
 interface BitCell {
   original: number;
@@ -99,15 +99,16 @@ export default function ChannelSimulator() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+    <div className="nb-card p-6">
       <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <Network className="w-6 h-6 text-brand-blue" />
-          <h2 className="text-xl font-bold text-slate-800 font-serif italic">
+        <span className="nb-pill nb-pill-violet">⬗ Quest 4 · Beat the Noise</span>
+        <div className="flex items-center gap-2 mt-2.5">
+          <Network className="w-6 h-6 text-violet" />
+          <h2 className="text-xl">
             Simulatie 3: Kanaalcapaciteit &amp; Feedback Ruiscorrectie (Edstacks 3 &amp; 4)
           </h2>
         </div>
-        <p className="text-slate-600 text-sm mt-1">
+        <p className="text-muted text-sm mt-1.5 font-medium">
           Volgens de <strong>Shannon-Hartley Theorem</strong> hangt de betrouwbare datasnelheid af van bandbreedte en ruis. Ontdek hoe organisatorische <strong>Business-IT alignment</strong> de ruis minimaliseert, en hoe de <strong>PDCA-cyclus</strong> als wiskundige foutcorrectie fungeert om foutloze executie te borgen.
         </p>
       </div>
@@ -115,21 +116,21 @@ export default function ChannelSimulator() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Controls Column */}
         <div className="space-y-6">
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-5">
-            <h3 className="font-semibold text-slate-750 text-sm flex items-center gap-1">
-              <Power className="w-4 h-4 text-brand-accent animate-pulse" />
+          <div className="bg-violet/12 nb-box p-4 space-y-5">
+            <h3 className="text-sm flex items-center gap-1.5">
+              <Power className="w-4 h-4 text-violet animate-pulse" />
               1. Business-IT Alignment (Negenvlaksmodel Rik Maes)
             </h3>
-            
-            <div className="flex rounded-lg bg-white p-1 border border-slate-200">
+
+            <div className="flex gap-2">
               {(['low', 'medium', 'high'] as const).map((lvl) => (
                 <button
                   key={lvl}
                   onClick={() => setAlignment(lvl)}
-                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                  className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide nb-box transition-all cursor-pointer ${
                     alignment === lvl
-                      ? 'bg-brand-blue text-white shadow shadow-brand-blue/10'
-                      : 'text-slate-500 hover:text-slate-700'
+                      ? 'bg-violet text-cream nb-shadow'
+                      : 'bg-white text-muted hover:-translate-y-0.5'
                   }`}
                   id={`channel-alignment-${lvl}`}
                 >
@@ -139,31 +140,31 @@ export default function ChannelSimulator() {
             </div>
 
             {/* Alignments specs list */}
-            <div className="text-[11px] text-slate-600 bg-white border border-slate-200 rounded-lg p-3 space-y-1 font-mono">
-              <div>• Systeembandbreedte (B): <strong className="text-slate-800">{B} MHz</strong></div>
-              <div>• Signaalkracht (S): <strong className="text-slate-800">{S} mW</strong></div>
-              <div>• Ruis (Misfits &amp; Datafouten) (N): <strong className="text-rose-600 font-bold">{N} mW</strong></div>
-              <div>• Signaal-Ruisverhouding (SNR): <strong className="text-slate-850">{snr.toFixed(2)}</strong> ({db.toFixed(1)} dB)</div>
+            <div className="text-[11px] text-ink/80 bg-white nb-box p-3 space-y-1.5 font-mono font-medium">
+              <div>• Systeembandbreedte (B): <strong className="nb-score text-ink">{B} MHz</strong></div>
+              <div>• Signaalkracht (S): <strong className="nb-score text-ink">{S} mW</strong></div>
+              <div>• Ruis (Misfits &amp; Datafouten) (N): <strong className="nb-score text-[#FF5252]">{N} mW</strong></div>
+              <div>• Signaal-Ruisverhouding (SNR): <strong className="nb-score text-ink">{snr.toFixed(2)}</strong> ({db.toFixed(1)} dB)</div>
             </div>
           </div>
 
           {/* Toggle Error Correction (PDCA Loop) */}
-          <div className={`p-4 rounded-xl border transition-all ${
-            pdcaActive 
-              ? 'bg-blue-50/55 border-brand-blue/30 text-brand-blue' 
-              : 'bg-slate-50 border-slate-200 text-slate-500'
+          <div className={`nb-box p-4 transition-all ${
+            pdcaActive
+              ? 'bg-lime'
+              : 'bg-cream'
           }`}>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <h4 className="font-bold text-sm flex items-center gap-1.5 text-slate-800">
-                  <CheckCircle className={`w-4 h-4 ${pdcaActive ? 'text-brand-accent' : 'text-slate-450'}`} />
+                <h4 className="text-sm flex items-center gap-1.5 text-ink">
+                  <CheckCircle className={`w-4 h-4 ${pdcaActive ? 'text-ink' : 'text-muted'}`} />
                   2. Activeer PDCA-cyclus (Foutencontrole &amp; Feedback)
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 max-w-sm">
+                <p className="text-[11px] text-ink/70 font-medium mt-1 max-w-sm">
                   Met PDCA (Plan, Do, Check, Act) worden tussentijdse fouten gedetecteerd (Check) en gecorrigeerd (Act) net zoals redundantie-bits doen in Shannons communicatiesystemen.
                 </p>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
+              <label className="relative inline-flex items-center cursor-pointer shrink-0">
                 <input
                   type="checkbox"
                   checked={pdcaActive}
@@ -171,7 +172,7 @@ export default function ChannelSimulator() {
                   className="sr-only peer"
                   id="channel-pdca-checkbox"
                 />
-                <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-blue"></div>
+                <div className="w-12 h-7 bg-white border-[3px] border-ink peer-focus:outline-none peer peer-checked:after:translate-x-[20px] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-ink after:h-[18px] after:w-[18px] after:transition-all peer-checked:bg-violet peer-checked:after:bg-cream"></div>
               </label>
             </div>
           </div>
@@ -179,7 +180,7 @@ export default function ChannelSimulator() {
           <button
             onClick={handleTransmit}
             disabled={isTransmitting}
-            className="w-full bg-brand-blue hover:bg-brand-blue-hover disabled:bg-slate-300 text-white font-bold py-3.5 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
+            className="nb-btn nb-btn-violet w-full py-3.5 px-4 text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             id="channel-transmit-btn"
           >
             {isTransmitting ? 'Bits reizen door het kanaal...' : 'Zend Strategisch Signaal Uit (24 bits)'}
@@ -188,45 +189,45 @@ export default function ChannelSimulator() {
 
         {/* Math Output and Streaming visualization */}
         <div className="space-y-6">
-          <div className="bg-slate-900 text-slate-150 p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div className="nb-panel-dark p-5 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">
+                <span className="nb-eyebrow !text-cream/60">
                   Theoretische Maximumcapaciteit (Wiskunde)
                 </span>
-                <span className="text-[10px] text-brand-accent font-bold bg-orange-950 px-2 py-0.5 rounded font-mono uppercase">
+                <span className="nb-pill nb-pill-violet !text-[0.6rem]">
                   Shannon-Hartley
                 </span>
               </div>
-              
+
               <div className="flex items-baseline gap-1.5 mb-4">
-                <span className="text-3xl font-extrabold text-white font-mono tracking-tight" id="channel-capacity-value">
+                <span className="nb-score text-4xl text-lime" id="channel-capacity-value">
                   {capacity.toFixed(2)}
                 </span>
-                <span className="text-xs text-brand-accent font-bold uppercase tracking-wider">Mbit/s</span>
+                <span className="text-xs text-violet font-bold uppercase tracking-wider">Mbit/s</span>
               </div>
 
               {/* Exact calculation details */}
-              <div className="text-[11px] font-mono leading-relaxed bg-slate-950 p-3 rounded-lg border border-slate-800 text-slate-400 mb-4">
-                <div className="text-brand-accent font-semibold mb-1">Formule: C = B * log₂(1 + S/N)</div>
+              <div className="text-[11px] font-mono leading-relaxed bg-cream/10 nb-box border-cream/30 p-3 text-cream/80 mb-4">
+                <div className="text-violet font-bold mb-1">Formule: C = B * log₂(1 + S/N)</div>
                 C = {B} * log₂(1 + {S} / {N}) <br />
                 C = {B} * log₂({(1 + snr).toFixed(2)}) <br />
-                C = {B} * {Math.log2(1 + snr).toFixed(3)} = <span className="text-white font-bold">{capacity.toFixed(2)} Mbit/s</span>
+                C = {B} * {Math.log2(1 + snr).toFixed(3)} = <span className="text-lime font-bold">{capacity.toFixed(2)} Mbit/s</span>
               </div>
             </div>
 
             {/* Binary transmission visual grid */}
             <div>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono block mb-2">
+              <span className="nb-eyebrow !text-cream/60 block mb-2">
                 Real-Time Bit Transmissie (Zender ➔ Ontvanger)
               </span>
 
               {stream.length === 0 ? (
-                <div className="h-20 flex items-center justify-center bg-slate-950 border border-slate-850 rounded-lg text-slate-500 font-mono text-xs italic">
+                <div className="h-20 flex items-center justify-center bg-cream/10 nb-box border-cream/30 text-cream/50 font-mono text-xs">
                   Klik op de knop om transmissie te starten
                 </div>
               ) : (
-                <div className="bg-slate-950 p-3 rounded-lg border border-slate-850">
+                <div className="bg-cream/10 nb-box border-cream/30 p-3">
                   <div className="grid grid-cols-8 gap-1.5">
                     {stream.map((cell, idx) => (
                       <motion.div
@@ -234,40 +235,40 @@ export default function ChannelSimulator() {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: idx * 0.02 }}
-                        className={`p-1.5 rounded text-center text-xs font-mono font-bold flex flex-col justify-center transition-all ${
+                        className={`p-1.5 nb-box text-center text-xs font-mono font-bold flex flex-col justify-center ${
                           cell.status === 'ok'
-                            ? 'bg-emerald-950/70 border border-emerald-500 text-emerald-400'
+                            ? 'bg-lime text-ink'
                             : cell.status === 'corrected'
-                            ? 'bg-orange-950/70 border border-brand-accent text-brand-accent'
-                            : 'bg-rose-950/70 border border-rose-500 text-rose-400'
+                            ? 'bg-violet text-cream'
+                            : 'bg-[#FF5252] text-ink'
                         }`}
                         title={`Origineel: ${cell.original}, Transmitted: ${cell.transmitted}, Corr: ${cell.corrected}`}
                         id={`channel-bit-${idx}`}
                       >
-                        <span className="text-[9px] text-slate-500">#{idx+1}</span>
-                        <div className="text-base font-extrabold">{cell.corrected}</div>
+                        <span className="text-[9px] opacity-70">#{idx+1}</span>
+                        <div className="nb-score text-base">{cell.corrected}</div>
                       </motion.div>
                     ))}
                   </div>
 
                   {/* Operational stats */}
-                  <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono mt-3 pt-2 border-t border-slate-800">
-                    <span>Datastroom: {stats.sent} bits</span>
-                    <span className="text-rose-400 font-semibold">Totaal Ruis (Flipped): {stats.corrupted}</span>
-                    <span className="text-brand-accent font-bold">PDCA Gecorrigeerd: {stats.fixed}</span>
+                  <div className="flex justify-between items-center text-[10px] text-cream/70 font-mono mt-3 pt-2 border-t border-cream/30">
+                    <span>Datastroom: <span className="nb-score text-cream">{stats.sent}</span> bits</span>
+                    <span className="text-[#FF5252] font-bold">Totaal Ruis (Flipped): <span className="nb-score">{stats.corrupted}</span></span>
+                    <span className="text-violet font-bold">PDCA Gecorrigeerd: <span className="nb-score">{stats.fixed}</span></span>
                   </div>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="bg-orange-50 rounded-xl border border-orange-200 p-4 text-xs text-slate-700 space-y-1">
-            <span className="font-bold flex items-center gap-1 text-orange-800 mb-1">
-              <Sparkles className="w-4 h-4 text-brand-accent" />
+          <div className="bg-pink/12 nb-box p-4 text-xs text-ink/80 font-medium space-y-1">
+            <span className="font-bold flex items-center gap-1.5 text-ink mb-1">
+              <Sparkles className="w-4 h-4 text-pink" />
               Systeem-Inzicht van de Professor:
             </span>
             <p className="leading-relaxed">
-              Zonder <strong>Business-IT alignment</strong> (de negen vakken van Rik Maes die niet synchroon draaien), is er sprake van &apos;zwakke alignment&apos;. Dit veroorzaakt data-inconsistentie (ruis) waardoor de strategische overdrachtsnelheid daalt naar <strong>{(B * Math.log2(1 + S/N)).toFixed(1)} Mbit/s</strong>. 
+              Zonder <strong>Business-IT alignment</strong> (de negen vakken van Rik Maes die niet synchroon draaien), is er sprake van &apos;zwakke alignment&apos;. Dit veroorzaakt data-inconsistentie (ruis) waardoor de strategische overdrachtsnelheid daalt naar <strong>{(B * Math.log2(1 + S/N)).toFixed(1)} Mbit/s</strong>.
               Door alignment te versterken en de <strong>PDCA-cyclus</strong> (kwaliteitscontrole) strak in te richten, wordt de foutloze signaaloverdracht hersteld!
             </p>
           </div>
